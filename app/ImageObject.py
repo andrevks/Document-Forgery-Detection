@@ -1,5 +1,6 @@
 from PIL import Image
-import scipy.misc
+# import scipy.misc
+import imageio 
 from math import pow
 import numpy as np
 import builtins
@@ -32,7 +33,7 @@ class ImageObject(object):
         self.imageOutputDirectory = outputDirectory
         self.imagePath = imageName
         self.imageData = Image.open(imageDirectory + imageName)
-        self.imageWidth, self.imageHeight = self.imageData.size  # height = vertikal, width = horizontal
+        self.imageWidth, self.imageHeight = self.imageData.size  # height = vertical, width = horizontal
 
         if self.imageData.mode != 'L':  # L means grayscale
             self.isThisRGBImage = True
@@ -275,7 +276,12 @@ class ImageObject(object):
                         linedImage[xCoordinate + 1:xCoordinate + 3, yCordinate, 1] = 255
 
         timeStamp = time.strftime("%Y%m%d_%H%M%S")
-        scipy.misc.imsave(self.imageOutputDirectory + timeStamp + "_" + self.imagePath, groundtruthImage)
-        scipy.misc.imsave(self.imageOutputDirectory + timeStamp + "_lined_" + self.imagePath, linedImage)
+        # scipy.misc.imsave(self.imageOutputDirectory + timeStamp + "_" + self.imagePath, groundtruthImage)
+        # scipy.misc.imsave(self.imageOutputDirectory + timeStamp + "_lined_" + self.imagePath, linedImage)
+        print("Writing image to specifed file...")
+        imageio.imwrite(self.imageOutputDirectory + timeStamp + "_" + self.imagePath, groundtruthImage)
+        print(f'saved: {self.imageOutputDirectory + timeStamp + "_" + self.imagePath}')
+        imageio.imwrite(self.imageOutputDirectory + timeStamp + "_lined_" + self.imagePath, linedImage)
+        print(f'saved: {self.imageOutputDirectory + timeStamp + "_lined_" + self.imagePath}')
 
         return self.imageOutputDirectory + timeStamp + "_lined_" + self.imagePath

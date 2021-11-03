@@ -18,15 +18,18 @@ from PIL import Image
 
 def connection():
     conn = MySQLdb.connect(host="localhost",
-                           user="root",
-                           passwd="Mahakali",
-                           db="test")
+                           user="user",
+                           passwd="password",
+                           db="db")
     c = conn.cursor()
     return c,conn
 
 
 
-UPLOAD_FOLDER = '/home/abhilasha/app/static/assets/'
+# UPLOAD_FOLDER = '/home/abhilasha/app/static/assets/'
+#For windows use '\\' 
+UPLOAD_FOLDER = 'app\\files\\'
+IMAGES_FOLDER = 'app\\files\\img'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
@@ -46,7 +49,7 @@ def loginpage():
     try:
             c, conn = connection()
             if request.method == "POST":
-                if request.form['username'] == 'admin' and request.form['password'] == 'admin@620':
+                if request.form['username'] == 'admin' and request.form['password'] == '123':
                     return redirect(url_for('userpage'))
                 #data = c.execute("select * from users where uname = (%s)",(thwart(request.form['username']),))
                 #data = c.fetchone ()[2]
@@ -88,7 +91,7 @@ def registerpage():
             x = c.execute("select * from users where uname = (%s)",
                               (thwart(username),))
             if int(x) > 0:
-                flash("That uname is already taken, please try another")
+                flash("This username is already taken, please try another")
                 return render_template('register.html', form=form)
             else:
                 c.execute("insert into users(uname, password, name) values(%s,%s,%s)",
@@ -118,6 +121,7 @@ def upload_file():
                 flash('No file part')
                 return redirect(request.url)
             file = request.files['file']
+            print('file: ', file)
         # if user does not select file, browser also
         # submit a empty part without filename
             if file.filename == '':
@@ -125,6 +129,8 @@ def upload_file():
                 return redirect(request.url)
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
+                print('filename: ', filename)
+                print('Going to "uploaded_file"...')
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 return redirect(url_for('uploaded_file',
                                     filename=filename))
@@ -138,7 +144,8 @@ from flask import send_from_directory
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     try:
-        CopyMoveDetection.detect('/home/abhilasha/app/static/assets/', filename, '/home/abhilasha/app/images/', blockSize=32)
+        # CopyMoveDetection.detect('/home/abhilasha/app/static/assets/', filename, '/home/abhilasha/app/images/', blockSize=32)
+        CopyMoveDetection.detect(UPLOAD_FOLDER, filename, IMAGES_FOLDER, blockSize=32)
         return '''<html><head></head><body><h1>Details successfuly added to database!</h1></body></html>'''
     except Exception as e:
         return str(e)

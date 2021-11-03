@@ -44,6 +44,7 @@ def detect(sourceDirectory, fileName, outputDirectory, blockSize=32):
         print("Error: Source Directory did not exist.")
         return
     elif not os.path.exists(sourceDirectory + fileName):
+        print("Dectection: ", sourceDirectory + fileName)
         print("Error: Image file did not exist.")
         return
     elif not os.path.exists(outputDirectory):

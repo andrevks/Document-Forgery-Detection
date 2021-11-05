@@ -52,7 +52,7 @@ def get_boxed_signature():
   signature.save('Pil.png')
   
 if __name__ == "__main__":
-  filename = 'Signature.png'
+  filename = 'data\\Signature.jpg'
   img = Image.open(filename)
   enhance_signature(img)
   get_boxed_signature()

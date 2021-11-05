@@ -468,23 +468,23 @@ table {
                                     <th>Forgery</th>
                                     <th>Forged</th>
                                 </tr>
-																{% for name,date,forgery,forged in data %}  
-																		<tr>
-																			{% for name1 in name %}
-																				<td>{{ name1 }}</td>
-																			{% endfor %}
-																			{% for date1 in date %}
-																				<td>{{ date1 }}</td>
-																			{% endfor %}
-																			{% for forgery1 in forgery %}
-																				<td>{{ forgery1 }}</td>
-																			{% endfor %}
-																			{% for forged1 in forged %}
-																				<td>{{ forged1 }}</td>	
-																			{% endfor %}
+									{% for name,date,forgery,forged in data %}  
+											<tr>
+												{% for name1 in name %}
+													<td>{{ name1 }}</td>
+												{% endfor %}
+												{% for date1 in date %}
+													<td>{{ date1 }}</td>
+												{% endfor %}
+												{% for forgery1 in forgery %}
+													<td>{{ forgery1 }}</td>
+												{% endfor %}
+												{% for forged1 in forged %}
+													<td>{{ forged1 }}</td>	
+												{% endfor %}
 																			
-																		</tr>
-																{% endfor %}
+											</tr>
+									{% endfor %}
                             </table>
 
     <!--Table body-->

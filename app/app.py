@@ -34,11 +34,11 @@ ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.secret_key = "Abhi"
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-app.secret_key = "Abhi"
 
 @app.route('/')
 def homepage():
@@ -51,17 +51,23 @@ def loginpage():
             if request.method == "POST":
                 if request.form['username'] == 'admin' and request.form['password'] == '123':
                     return redirect(url_for('userpage'))
-                #data = c.execute("select * from users where uname = (%s)",(thwart(request.form['username']),))
-                #data = c.fetchone ()[2]
-                #if request.form['password'] == str(data):
-                #    session['logged_in'] = True
-                #    session['username'] = request.form['username']
-                #    flash("You are now logged in!")
-                #    redirect(url_for('userpage'))
+                #Check if the user exists, if it does the return is 1
+                data = c.execute("select * from users where uname = (%s)",(thwart(request.form['username']),))
+                print(f'DATA: {data} ')
+                #Retrieve the password
+                data = c.fetchone ()[2]
+                print(f'Fetchone -> DATA: {data} ')
+                #Mock authentication
+                if request.form['password'] == str(data):
+                   print('Inside the the request.form! ')
+                   session['logged_in'] = True
+                   session['username'] = request.form['username']
+                   flash("You are now logged in!")
+                   return redirect(url_for('userpage'))
                 else:
                     error = "Invalid credentials, Try Again!"
                     return str(error)
-
+            #trigger a manual garbage collection process 
             gc.collect()
             return render_template('login.html')
 
@@ -145,11 +151,12 @@ from flask import send_from_directory
 def uploaded_file(filename):
     try:
         # CopyMoveDetection.detect('/home/abhilasha/app/static/assets/', filename, '/home/abhilasha/app/images/', blockSize=32)
-        CopyMoveDetection.detect(UPLOAD_FOLDER, filename, IMAGES_FOLDER, blockSize=32)
+        result = CopyMoveDetection.detect(UPLOAD_FOLDER, filename, IMAGES_FOLDER, blockSize=32)
+        print(result)
         return '''<html><head></head><body><h1>Details successfuly added to database!</h1></body></html>'''
     except Exception as e:
         return str(e)
-    #return send_from_directory(app.config['UPLOAD_FOLDER'],
+    # return send_from_directory(app.config['UPLOAD_FOLDER'],
     #                           filename)
 
 

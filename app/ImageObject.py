@@ -43,6 +43,7 @@ class ImageObject(object):
                 'L')  # creates a grayscale version of current image to be used later
             GrayscaleImagePixels = self.imageGrayscale.load()
 
+            #?
             for yCoordinate in range(0, self.imageHeight):
                 for xCoordinate in range(0, self.imageWidth):
                     redPixelValue, greenPixelValue, bluePixelValue = RGBImagePixels[xCoordinate, yCoordinate]

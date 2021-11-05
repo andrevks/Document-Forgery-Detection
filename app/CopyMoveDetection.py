@@ -11,6 +11,7 @@ def detect_dir(sourceDirectory, outputDirectory, blockSize=32):
     The smaller the block size, the more accurate the result is, but takes more time, vice versa.
     :return: None
     """
+    print('Detecting the Dir...')
 
     timeStamp = time.strftime("%Y%m%d_%H%M%S")  # get current timestamp
     os.makedirs(outputDirectory + timeStamp)    # create a folder named as the current timestamp
@@ -51,7 +52,9 @@ def detect(sourceDirectory, fileName, outputDirectory, blockSize=32):
         print("Error: Output Directory did not exist.")
         return
 
+    #Calls the constructor to set the image object
     singleImage = ImageObject.ImageObject(sourceDirectory, fileName, blockSize, outputDirectory)
+    #Calls the run method to make the algorithm compute
     imageResultPath = singleImage.run()
 
     print("Done.")
